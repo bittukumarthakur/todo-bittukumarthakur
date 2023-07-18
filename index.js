@@ -1,6 +1,12 @@
 const mark = (event) => {
   const element = event.target;
-  element.classList.add("green");
+
+  if (element.classList.length === 0) {
+    element.classList.add("green");
+    return;
+  };
+
+  element.classList.remove("green");
 };
 
 const createTaskElement = (message) => {
