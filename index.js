@@ -2,6 +2,7 @@ const mark = (event) => {
   const element = event.target;
 
   if (element.classList.length === 0) {
+    //very bad need to change.
     element.classList.add("green");
     return;
   };
@@ -28,6 +29,6 @@ const addTask = () => {
 const main = () => {
   const addTaskElement = document.querySelector("#add-task");
   addTaskElement.onclick = addTask;
-}
+}; 
 
 window.onload = main;
