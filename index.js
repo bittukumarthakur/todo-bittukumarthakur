@@ -1,16 +1,14 @@
 const addTask = () => {
-  const todoListElement = document.querySelector("#todo-list");
-  const task = document.querySelector("add-task");
-  const taskElement = document.createElement("li");
-  taskElement.innerText = task.value;
-
-  todoListElement.appendChild(taskElement);
+  const task = document.querySelector("#task-title");
+  const list = document.querySelector("#list");
+  const newTask = document.createElement("li");
+  newTask.innerText = task.value;
+  list.appendChild(newTask);
 };
 
 const main = () => {
-  const submitButton = document.querySelector("#submit");
-  submitButton.onclick = addTask;
-
+  const addTaskElement = document.querySelector("#add-task");
+  addTaskElement.onclick = addTask;
 }
 
 window.onload = main;

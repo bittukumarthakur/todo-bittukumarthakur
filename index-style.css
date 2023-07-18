@@ -4,14 +4,3 @@
   box-sizing: border-box;
   font-size: 24px;
 }
-
-#todo-page {
-  width: 500px;
-  margin: 2em auto;
-  line-height: 1.5em;
-}
-
-#heading {
-  font-size: 2em;
-  text-align: center;
-}
