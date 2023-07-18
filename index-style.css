@@ -1,6 +1,20 @@
 * {
-  margin: 0;
+  margin: 10;
   padding: 0;
   box-sizing: border-box;
   font-size: 24px;
+}
+
+body {
+  width: 40%;
+  margin: 0em auto;
+}
+
+#heading {
+  font-size: 2em;
+  text-align: center;
+}
+
+.green {
+  background-color: greenyellow;
 }

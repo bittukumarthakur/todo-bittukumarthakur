@@ -4,6 +4,9 @@ const addTask = () => {
   const newTask = document.createElement("li");
   newTask.innerText = task.value;
   list.appendChild(newTask);
+
+  newTask.onclick = () => newTask.classList.add("green");
+
 };
 
 const main = () => {
