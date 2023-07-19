@@ -37,17 +37,14 @@ const main = () => {
   };
 
   const renderAlphabetically = () => {
-    const sortedTodoTask = todoTasks.sort((task1, task2) => {
-      task2.description.charCodeAt() - task1.description.charCodeAt();
-    });
+    todoTasks.sort((a, b) => { return a.description.charCodeAt() - b.description.charCodeAt() });
 
-    console.log(sortedTodoTask);
-    // render(sortedTodoTask);
+    render(todoTasks);
   }
 
   addTaskButton.onclick = createTask;
 
-  alphaOrderButton.onclick = renderAlphabetically
+  alphaOrderButton.onclick = renderAlphabetically;
 };
 
 window.onload = main;
