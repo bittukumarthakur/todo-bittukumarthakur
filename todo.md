@@ -23,7 +23,6 @@ view.render(todoTask);
 
 const controller = new Controller(todo,view);
 
-
 const main = () => {
   const todo = new Todo();
 
