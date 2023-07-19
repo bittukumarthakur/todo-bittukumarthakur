@@ -15,6 +15,7 @@ body {
   text-align: center;
 }
 
-.green {
-  background-color: greenyellow;
+.mark {
+  color: grey;
+  text-decoration: line-through;
 }

@@ -1,13 +1,6 @@
 const mark = (event) => {
   const element = event.target;
-
-  if (element.classList.length === 0) {
-    //very bad need to change.
-    element.classList.add("green");
-    return;
-  };
-
-  element.classList.remove("green");
+  element.classList.toggle("mark");
 };
 
 const createTaskElement = (message) => {
@@ -16,19 +9,21 @@ const createTaskElement = (message) => {
   return newTask;
 };
 
-const addTask = () => {
-  const task = document.querySelector("#task-title");
-  const list = document.querySelector("#list");
+const addTask = (tasks) => {
+  const taskDescription = document.querySelector("#task-description");
 
-  const newTask = createTaskElement(task.value);
+  const list = document.querySelector("#task-list");
+
+  const newTask = createTaskElement(taskDescription.value);
   list.appendChild(newTask);
 
   newTask.onclick = mark;
 };
 
 const main = () => {
-  const addTaskElement = document.querySelector("#add-task");
-  addTaskElement.onclick = addTask;
-}; 
+  const addTaskButton = document.querySelector("#add-task-button");
+
+  addTaskButton.onclick = addTask;
+};
 
 window.onload = main;
