@@ -10,15 +10,15 @@ const createLiElement = (task) => {
 };
 
 const createTasksElement = (todoTasks) => {
-  return todoTasks.map(createLiElement)
+  return todoTasks.map(createLiElement);
 };
 
 const render = (todoTasks) => {
   const list = document.querySelector("#task-list");
   const taskElements = createTasksElement(todoTasks);
 
-  [...list.children].forEach(element => { element.remove() });
-  taskElements.forEach(element => { list.appendChild(element) });
+  [...list.children].forEach(element => { element.remove(); });
+  taskElements.forEach(element => { list.appendChild(element); });
 };
 
 const main = () => {
@@ -37,10 +37,10 @@ const main = () => {
   };
 
   const renderAlphabetically = () => {
-    todoTasks.sort((a, b) => { return a.description.charCodeAt() - b.description.charCodeAt() });
+    todoTasks.sort((task1, task2) => { return task1.description.charCodeAt() - task2.description.charCodeAt(); });
 
     render(todoTasks);
-  }
+  };
 
   addTaskButton.onclick = createTask;
 
