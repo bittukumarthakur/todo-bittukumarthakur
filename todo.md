@@ -22,17 +22,3 @@ const view = new View(container);
 view.render(todoTask);
 
 const controller = new Controller(todo,view);
-
-const main = () => {
-  const todo = new Todo();
-
-  addTaskButton.onclick = () => {
-    const task = new Task("Fill timeSheet.");
-    todo.addTask(task);
-    const taskElement = getTaskElement(task.description);
-    taskElement.onClick = (e) => {
-      task.mark();
-    }
-    render(todo.status);
-  };
-};
