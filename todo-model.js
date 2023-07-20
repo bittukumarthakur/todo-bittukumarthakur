@@ -56,6 +56,13 @@ class TaskList {
       return { id, description, isMark };
     });
   }
+
+  getSortedTaskDetails() {
+    const tasksDetails = this.getTasksDetails();
+    return tasksDetails.toSorted((a, b) => {
+      return a.description > b.description ? 1 : -1;
+    });
+  }
 };
 
 class TaskListView {
@@ -108,15 +115,12 @@ class Controller {
   }
 
   render(sortMethod) {
-    const todoListDetails = this.#todoList.getTasksDetails();
-
     if (sortMethod.alphabetically) {
-      todoListDetails.sort((a, b) => {
-        return a.description > b.description ? 1 : -1;
-      });
+      this.#todoListViewer.render(this.#todoList.getSortedTaskDetails());
+      return;
     };
 
-    this.#todoListViewer.render(todoListDetails);
+    this.#todoListViewer.render(this.#todoList.getTasksDetails());
   }
 };
 
@@ -132,9 +136,12 @@ const main = () => {
   const controller = new Controller(todoList, todoListViewer);
 
   const addTask = () => {
-    const task = new Task(taskDescription.value);
+    const description = taskDescription.value;
+    const task = new Task(description);
     controller.addTask(task);
     controller.render(sortMethod);
+
+    taskDescription.value = "";
   };
 
   const toggleMark = (event) => {
