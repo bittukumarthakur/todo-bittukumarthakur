@@ -25,10 +25,12 @@ class Task {
 class TaskList {
   #tasks
   #taskCount
+  #ids
 
   constructor() {
     this.#tasks = {};
     this.#taskCount = 0;
+    this.#ids = [];
   }
 
   #generateId() {
@@ -39,6 +41,7 @@ class TaskList {
 
   addTask(task) {
     const id = this.#generateId();
+    this.#ids.push(id);
     this.#tasks[id] = task;
     return id;
   }
@@ -49,11 +52,10 @@ class TaskList {
   }
 
   getTasksDetails() {
-    const tasksWithId = Object.entries(this.#tasks);
-
-    return tasksWithId.map(([id, task]) => {
-      const { description, isMark } = task.getDetails();
-      return { id, description, isMark };
+    return this.#ids.map((id) => {
+      const task = this.#tasks[id];
+      const details = task.getDetails();
+      return { id, ...details };
     });
   }
 
