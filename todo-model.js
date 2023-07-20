@@ -51,11 +51,10 @@ class TaskList {
     task.toggleMark();
   }
 
-  #groupByDone(tasks) {
+  groupByDone(tasks) {
     return tasks.toSorted((a, b) => {
       return a.isMark === true ? 1 : -1;
     });
-
   }
 
   getTasksDetails() {
@@ -66,8 +65,11 @@ class TaskList {
       return { id, ...details };
     });
 
-    return this.#groupByDone(data);
+    // return data;
+    return this.groupByDone(data);
   }
+
+
 
   getSortedTaskDetails() {
     const tasksDetails = this.getTasksDetails();
@@ -141,6 +143,8 @@ const main = () => {
   const taskDescription = document.querySelector("#task-description");
   const taskListContainer = document.querySelector("#task-list");
   const sortButton = document.querySelector("#sort-alphabetically");
+  const selectMethod = document.querySelector("#select-method");
+
   const sortMethod = { alphabetically: false };
 
   const todoList = new TaskList();
@@ -170,6 +174,10 @@ const main = () => {
   addTaskButton.onclick = addTask;
   taskListContainer.onclick = toggleMark
   sortButton.onclick = sortAlphabetically;
+
+  selectMethod.onclick = (event) => {
+    console.log(event.target.value);
+  };
 };
 
 window.onload = main;
