@@ -51,12 +51,22 @@ class TaskList {
     task.toggleMark();
   }
 
+  #groupByDone(tasks) {
+    return tasks.toSorted((a, b) => {
+      return a.isMark === true ? 1 : -1;
+    });
+
+  }
+
   getTasksDetails() {
-    return this.#ids.map((id) => {
+
+    const data = this.#ids.map((id) => {
       const task = this.#tasks[id];
       const details = task.getDetails();
       return { id, ...details };
     });
+
+    return this.#groupByDone(data);
   }
 
   getSortedTaskDetails() {

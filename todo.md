@@ -22,3 +22,12 @@ const view = new View(container);
 view.render(todoTask);
 
 const controller = new Controller(todo,view);
+
+## input controller
+- it take input from the mouse.
+- it will call the the event.
+
+const inputController = new InputController(container);
+
+
+
