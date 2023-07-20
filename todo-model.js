@@ -7,7 +7,7 @@ class Task {
     this.#mark = false;
   }
 
-  markToggle() {
+  toggleMark() {
     this.#mark = !this.#mark
   }
 
@@ -22,7 +22,7 @@ class Task {
   }
 };
 
-class TodoList {
+class TaskList {
   #tasks
   #taskCount
 
@@ -43,9 +43,9 @@ class TodoList {
     return id;
   }
 
-  markToggle(taskId) {
+  toggleMark(taskId) {
     const task = this.#tasks[taskId];
-    task.markToggle();
+    task.toggleMark();
   }
 
   getTasksDetails() {
@@ -58,7 +58,7 @@ class TodoList {
   }
 };
 
-class TodoListViewer {
+class TaskListView {
   #container
   constructor(container) {
     this.#container = container;
@@ -77,6 +77,8 @@ class TodoListViewer {
     const elements = [...this.#container.children];
     elements.forEach(element => element.remove());
   }
+
+
 
   render(tasksDetail) {
     this.#clearContainer();
@@ -101,38 +103,60 @@ class Controller {
     this.#todoList.addTask(task);
   }
 
-  render() {
+  toggleMark(taskId) {
+    this.#todoList.toggleMark(taskId);
+  }
+
+  render(sortMethod) {
     const todoListDetails = this.#todoList.getTasksDetails();
+
+    if (sortMethod.alphabetically) {
+      todoListDetails.sort((a, b) => {
+        return a.description > b.description ? 1 : -1;
+      });
+    };
+
     this.#todoListViewer.render(todoListDetails);
-    console.log(todoListDetails);
   }
 };
-
 
 const main = () => {
   const addTaskButton = document.querySelector("#add-task-button");
   const taskDescription = document.querySelector("#task-description");
   const taskListContainer = document.querySelector("#task-list");
+  const sortButton = document.querySelector("#sort-alphabetically");
+  const sortMethod = { alphabetically: false };
 
-  const todoList = new TodoList();
-  const todoListViewer = new TodoListViewer(taskListContainer);
+  const todoList = new TaskList();
+  const todoListViewer = new TaskListView(taskListContainer);
   const controller = new Controller(todoList, todoListViewer);
 
-  addTaskButton.onclick = () => {
+  const addTask = () => {
     const task = new Task(taskDescription.value);
     controller.addTask(task);
-    controller.render();
+    controller.render(sortMethod);
   };
 
-  taskListContainer.onclick = (event) => {
-    const element = event.target;
-    todoList.markToggle(element.id);
-    controller.render();
-
-    console.log(event.target.id);
+  const toggleMark = (event) => {
+    const taskElement = event.target;
+    controller.toggleMark(taskElement.id);
+    controller.render(sortMethod);
   };
 
+  const sortAlphabetically = () => {
+    sortMethod.alphabetically = !sortMethod.alphabetically;
+    controller.render(sortMethod);
+  };
 
+  addTaskButton.onclick = addTask;
+  taskListContainer.onclick = toggleMark
+  sortButton.onclick = sortAlphabetically;
 };
 
 window.onload = main;
+
+// // some controller
+//  todoTasksView.onNewTask((taskDescription) => {
+//    this.todo.addTask(taskDescription);
+//    todoTasksView.updateTasks(this.todo.getTasks());
+//  });
