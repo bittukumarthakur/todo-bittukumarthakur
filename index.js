@@ -21,7 +21,7 @@ const render = (todoTasks) => {
   taskElements.forEach(element => { list.appendChild(element); });
 };
 
-const main = () => {
+const main = function () {
   const todoTasks = [];
 
   const addTaskButton = document.querySelector("#add-task-button");
@@ -37,13 +37,14 @@ const main = () => {
   };
 
   const renderAlphabetically = () => {
-    todoTasks.sort((task1, task2) => { return task1.description.charCodeAt() - task2.description.charCodeAt(); });
+    todoTasks.sort((task1, task2) => {
+      return task1.description.charCodeAt() - task2.description.charCodeAt();
+    });
 
     render(todoTasks);
   };
 
   addTaskButton.onclick = createTask;
-
   alphaOrderButton.onclick = renderAlphabetically;
 };
 
