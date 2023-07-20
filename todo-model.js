@@ -46,6 +46,11 @@ class TaskList {
     return id;
   }
 
+  deleteTask(taskId) {
+    delete this.#tasks[taskId];
+    this.#ids = this.#ids.filter((id) => id !== taskId);
+  }
+
   toggleMark(taskId) {
     const task = this.#tasks[taskId];
     task.toggleMark();
