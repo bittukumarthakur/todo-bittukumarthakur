@@ -29,5 +29,7 @@ const controller = new Controller(todo,view);
 
 const inputController = new InputController(container);
 
+## delete task 
+
 
 

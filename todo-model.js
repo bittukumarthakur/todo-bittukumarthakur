@@ -65,11 +65,8 @@ class TaskList {
       return { id, ...details };
     });
 
-    // return data;
     return this.groupByDone(data);
   }
-
-
 
   getSortedTaskDetails() {
     const tasksDetails = this.getTasksDetails();
@@ -94,18 +91,26 @@ class TaskListView {
     return element;
   }
 
+  #createDeleteButton({ id }) {
+    const element = document.createElement("input");
+    element.type = "button";
+    element.value = "delete";
+    element.id = `delete-${id}`;
+    return element;
+  }
+
   #clearContainer() {
     const elements = [...this.#container.children];
     elements.forEach(element => element.remove());
   }
-
-
 
   render(tasksDetail) {
     this.#clearContainer();
 
     tasksDetail.forEach((taskDetail) => {
       const taskElement = this.#createElement(taskDetail);
+      const del = this.#createDeleteButton(taskDetail);
+      taskElement.appendChild(del);
       this.#container.appendChild(taskElement);
     });
   }
@@ -175,7 +180,7 @@ const main = () => {
   taskListContainer.onclick = toggleMark
   sortButton.onclick = sortAlphabetically;
 
-  selectMethod.onclick = (event) => {
+  selectMethod.onchange = (event) => {
     console.log(event.target.value);
   };
 };
