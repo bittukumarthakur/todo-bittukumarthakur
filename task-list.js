@@ -23,14 +23,12 @@ class Task {
 };
 
 class TaskList {
-  #tasks;
+  #tasksWithId;
   #taskCount;
-  #ids;
 
   constructor() {
-    this.#tasks = [];
+    this.#tasksWithId = [];
     this.#taskCount = 0;
-    this.#ids = [];
   }
 
   #generateId() {
@@ -42,42 +40,58 @@ class TaskList {
   addTask(description) {
     const task = new Task(description);
     const id = this.#generateId();
-    this.#tasks.push({ id, task });
+    this.#tasksWithId.push({ id, task });
   }
 
   deleteTask(taskId) {
-    this.#tasks.filter(({ id }) => { return id !== taskId });
+    this.#tasksWithId = this.#tasksWithId.filter(({ id }) => id !== taskId);
+  }
 
-    this.#ids = this.#ids.filter((id) => id !== taskId);
+  #getTask(taskId) {
+    const { task } = this.#tasksWithId.find(({ id }) => id === taskId);
+    return task;
   }
 
   toggleMark(taskId) {
-    const task = this.#tasks[taskId];
+    const task = this.#getTask(taskId);
     task.toggleMark();
   }
 
-  groupByDone(tasks) {
-    return tasks.toSorted((a, b) => {
-      return a.isMark === true ? 1 : -1;
+  report() {
+    return this.#tasksWithId.map(({ id, task }) => {
+      const { description, isMarked } = task.getDetails();
+      return { id, description, isMarked };
     });
   }
 
-  getTasksDetails() {
-
-    const data = this.#ids.map((id) => {
-      const task = this.#tasks[id];
-      const details = task.getDetails();
-      return { id, ...details };
-    });
-
-    return this.groupByDone(data);
+  #groupByDone() {
+    const tasks = this.report();
+    return tasks.toSorted((a, b) => a.isMark === true ? 1 : -1);
   }
 
-  getSortedTaskDetails() {
-    const tasksDetails = this.getTasksDetails();
-    return tasksDetails.toSorted((a, b) => {
-      return a.description > b.description ? 1 : -1;
-    });
+  #sortByAlphabetically() {
+    const tasks = this.report();
+    return tasks.toSorted((a, b) => a.description > b.description ? 1 : -1);
   }
+
+  sortBy(methodName) {
+    // we need to change switch case;
+    switch (methodName) {
+      case "group": return this.#groupByDone();
+      case "alphabetically": return this.#sortByAlphabetically();
+      default: return this.report();
+    };
+  }
+
 };
 
+
+const main = () => {
+  const taskList = new TaskList();
+  taskList.addTask("Mango");
+  taskList.addTask("Apple");
+
+  console.log(taskList.sortBy("group"));
+};
+
+main();
