@@ -17,6 +17,6 @@ class taskController {
   }
 
   start() {
-    
+    this.#taskListView.onclickAdd(this.#addTask);
   }
-}
+};

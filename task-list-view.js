@@ -40,6 +40,13 @@ class TaskListView {
     elements.forEach(element => element.remove());
   }
 
+  onclickAdd(createTask) {
+    this.#addButton.onclick = () => {
+      const description = this.#inputBox.value;
+      createTask(description);
+    };
+  }
+
   render(tasksDetail) {
     this.#clearTaskListContainer();
 
