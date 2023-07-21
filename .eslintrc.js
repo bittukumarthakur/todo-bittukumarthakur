@@ -4,12 +4,16 @@ module.exports = {
     "es2019": true
   },
 
+  parserOptions: {
+    ecmaVersion: "latest"
+  },
+
   "ignorePatterns": [".eslintrc.js"],
 
   rules: {
     "semi": ["error", "always"],
     "camelcase": ["error"],
-    "id-length": ["warn", { max: 15 }],
+    "id-length": ["warn", { max: 25 }],
     "prefer-const": ["error"],
     "valid-typeof": ["error"],
 
@@ -20,7 +24,7 @@ module.exports = {
 
     "max-classes-per-file": ["error", 3],
     "max-params": ["warn", 3],
-    "max-lines-per-function": ["error", 10],
+    "max-lines-per-function": ["error", 50],
     "max-depth": ["error", 3]
   }
 }

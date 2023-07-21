@@ -25,7 +25,7 @@ class Task {
 class TaskList {
   #tasksWithId;
   #taskCount;
-  #sortMethodName
+  #sortMethodName;
 
   constructor() {
     this.#tasksWithId = [];
@@ -44,7 +44,7 @@ class TaskList {
     this.#tasksWithId.push({ id, task });
   }
 
-  deleteTask(taskId) {
+  removeTask(taskId) {
     this.#tasksWithId = this.#tasksWithId.filter(({ id }) => id !== taskId);
   }
 
@@ -60,9 +60,10 @@ class TaskList {
 
   report() {
     const sortMethod = {
-      group: (a, b) => a.isMarked === true ? 0 : -1,
-      alphabetically: (a, b) => a.description > b.description ? 1 : -1,
-      default: (a, b) => 0
+      group: (taskA) => taskA.isMarked === true ? 0 : -1,
+      alphabetically: (taskA, taskB) =>
+        taskA.description > taskB.description ? 1 : -1,
+      default: () => 0
     };
     const reportDetails = this.#tasksWithId.map(({ id, task }) => {
       const { description, isMarked } = task.getDetails();
@@ -87,9 +88,10 @@ class TaskListView {
   #headingElement;
   #toggleMark;
   #selectElement;
+  #removeTask;
 
   constructor(title) {
-    this.#title = title
+    this.#title = title;
   };
 
   createInitialTemplate() {
@@ -101,10 +103,10 @@ class TaskListView {
     this.#headingElement = document.createElement("h2");
     this.#headingElement.innerText = this.#title;
 
-    this.#inputBox = document.createElement("input")
+    this.#inputBox = document.createElement("input");
     this.#inputBox.type = "text";
     this.#inputBox.placeholder = "Type your task here";
-    this.#inputBox.id = "input-box"
+    this.#inputBox.classList.add("input-box");
 
     this.#addButton = document.createElement("input");
     this.#addButton.type = "button";
@@ -157,10 +159,10 @@ class TaskListView {
     elements.forEach(element => element.remove());
   }
 
-  onclickAdd(createTask) {
+  onclickAdd(addTask) {
     this.#addButton.onclick = () => {
       const description = this.#inputBox.value;
-      createTask(description);
+      addTask(description);
     };
   }
 
@@ -172,11 +174,29 @@ class TaskListView {
     this.#selectElement.onchange = setSortMethod;
   }
 
+  onclickRemove(removeTask) {
+    this.#removeTask = removeTask;
+  }
+
+  #createRemoveButton() {
+    const removeButton = document.createElement("input");
+    removeButton.type = "button";
+    removeButton.value = "X";
+    removeButton.classList.add("remove-Button");
+    return removeButton;
+  }
+
   render(tasksDetail) {
     this.#clearTaskListContainer();
 
     tasksDetail.forEach((taskDetail) => {
       const taskElement = this.#createElement(taskDetail);
+      const removeButton = this.#createRemoveButton();
+      taskElement.appendChild(removeButton);
+      removeButton.onclick = (event) => {
+        event.stopPropagation();
+        this.#removeTask(taskDetail.id);
+      };
       taskElement.onclick = this.#toggleMark;
 
       this.#taskListContainer.appendChild(taskElement);
@@ -219,6 +239,11 @@ class TaskListController {
       this.#taskList.sortBy(methodName);
       this.render();
     });
+
+    this.#taskListView.onclickRemove((taskId) => {
+      this.#taskList.removeTask(taskId);
+      this.render();
+    });
   }
 };
 
@@ -230,7 +255,7 @@ const setupTodo = (title) => {
 };
 
 const main = () => {
-  setupTodo("study");
+  setupTodo("Study");
   // setupTodo("work");
 };
 
