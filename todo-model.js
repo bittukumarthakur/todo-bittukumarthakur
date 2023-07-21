@@ -1,6 +1,6 @@
 class Task {
-  #description
-  #mark
+  #description;
+  #mark;
 
   constructor(description) {
     this.#description = description;
@@ -23,9 +23,9 @@ class Task {
 };
 
 class TaskList {
-  #tasks
-  #taskCount
-  #ids
+  #tasks;
+  #taskCount;
+  #ids;
 
   constructor() {
     this.#tasks = {};
@@ -82,7 +82,7 @@ class TaskList {
 };
 
 class TaskListView {
-  #container
+  #container;
   constructor(container) {
     this.#container = container;
   }
@@ -109,11 +109,17 @@ class TaskListView {
     elements.forEach(element => element.remove());
   }
 
+  onclickTask(cb) {
+    this.onclickTaskCb = cb;
+  }
+
   render(tasksDetail) {
     this.#clearContainer();
 
     tasksDetail.forEach((taskDetail) => {
       const taskElement = this.#createElement(taskDetail);
+      taskElement.onclick = this.onclickTaskCb;
+
       const del = this.#createDeleteButton(taskDetail);
       taskElement.appendChild(del);
       this.#container.appendChild(taskElement);
@@ -157,9 +163,9 @@ const main = () => {
 
   const sortMethod = { alphabetically: false };
 
-  const todoList = new TaskList();
+  const taskList = new TaskList();
   const todoListViewer = new TaskListView(taskListContainer);
-  const controller = new Controller(todoList, todoListViewer);
+  const controller = new Controller(taskList, todoListViewer);
 
   const addTask = () => {
     const description = taskDescription.value;
@@ -172,6 +178,7 @@ const main = () => {
 
   const toggleMark = (event) => {
     const taskElement = event.target;
+
     controller.toggleMark(taskElement.id);
     controller.render(sortMethod);
   };
