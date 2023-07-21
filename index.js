@@ -92,6 +92,7 @@ class TaskListView {
   #taskListContainer;
   #title;
   #headingElement;
+  #toggleMark;
 
   constructor(title) {
     this.#title = title
@@ -146,11 +147,17 @@ class TaskListView {
     };
   }
 
+  onclickTask(toggleMark) {
+    this.#toggleMark = toggleMark;
+  }
+
   render(tasksDetail) {
     this.#clearTaskListContainer();
 
     tasksDetail.forEach((taskDetail) => {
       const taskElement = this.#createElement(taskDetail);
+      taskElement.onclick = this.#toggleMark;
+
       this.#taskListContainer.appendChild(taskElement);
     });
   }
@@ -168,7 +175,6 @@ class TaskListController {
 
   render() {
     const tasksDetail = this.#taskList.report();
-    console.log(tasksDetail);
     this.#taskListView.render(tasksDetail);
   }
 
@@ -177,6 +183,12 @@ class TaskListController {
 
     this.#taskListView.onclickAdd((description) => {
       this.#taskList.addTask(description);
+      this.render();
+    });
+
+    this.#taskListView.onclickTask((event) => {
+      const taskElement = event.target;
+      this.#taskList.toggleMark(taskElement.id);
       this.render();
     });
   }
