@@ -90,27 +90,39 @@ class TaskListView {
   #inputBox;
   #addButton;
   #taskListContainer;
+  #title;
+  #headingElement;
 
-  constructor() {
+  constructor(title) {
+    this.#title = title
+  };
+
+  createInitialTemplate() {
     // we need to move some where else.
     this.#todoPage = document.createElement("div");
     this.#todoPage.classList.add("todoPage");
 
+    this.#headingElement = document.createElement("h2");
+    this.#headingElement.innerText = this.#title;
+
     this.#inputBox = document.createElement("input")
     this.#inputBox.type = "text";
     this.#inputBox.placeholder = "Type your task here";
+    this.#inputBox.id = "input-box"
 
     this.#addButton = document.createElement("input");
     this.#addButton.type = "button";
     this.#addButton.value = "Add";
+    this.#addButton.id = "add-button";
 
     this.#taskListContainer = document.createElement("ol");
 
+    this.#todoPage.appendChild(this.#headingElement);
     this.#todoPage.appendChild(this.#inputBox);
     this.#todoPage.appendChild(this.#addButton);
     this.#todoPage.appendChild(this.#taskListContainer);
 
-    document.appendChild(this.#todoPage);
+    document.body.appendChild(this.#todoPage);
   }
 
   #createElement({ id, description, isMarked }) {
@@ -145,7 +157,7 @@ class TaskListView {
 
 };
 
-class taskListController {
+class TaskListController {
   #taskList;
   #taskListView;
 
@@ -154,25 +166,31 @@ class taskListController {
     this.#taskListView = taskListView;
   }
 
-  #addTask(description) {
-    this.#taskList.addTask(description);
-  }
-
   render() {
-    const tasksDetail = taskList.report();
+    const tasksDetail = this.#taskList.report();
+    console.log(tasksDetail);
     this.#taskListView.render(tasksDetail);
   }
 
   start() {
-    this.#taskListView.onclickAdd(this.#addTask);
+    this.#taskListView.createInitialTemplate();
+
+    this.#taskListView.onclickAdd((description) => {
+      this.#taskList.addTask(description);
+      this.render();
+    });
   }
 };
 
-const main = () => {
+const setupTodo = (title) => {
   const taskList = new TaskList();
-  const taskListView = new TaskListView();
-  const taskListController = new taskListController(taskList, taskListView);
+  const taskListView = new TaskListView(title);
+  const taskListController = new TaskListController(taskList, taskListView);
   taskListController.start();
+};
+
+const main = () => {
+  setupTodo("study");
 
 };
 

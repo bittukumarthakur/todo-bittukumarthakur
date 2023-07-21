@@ -19,3 +19,13 @@ body {
   color: grey;
   text-decoration: line-through;
 }
+
+#input-box {
+  width: 60%;
+  height: 1.5em;
+}
+
+#add-button {
+  height: 1.5em;
+  width: 15%;
+}
