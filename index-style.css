@@ -21,11 +21,16 @@ body {
 }
 
 #input-box {
-  width: 60%;
+  width: 50%;
   height: 1.5em;
 }
 
 #add-button {
   height: 1.5em;
   width: 15%;
+}
+
+#select-sort-method {
+  height: 1.5em;
+  width: 7.5em;
 }

@@ -25,10 +25,12 @@ class Task {
 class TaskList {
   #tasksWithId;
   #taskCount;
+  #sortMethodName
 
   constructor() {
     this.#tasksWithId = [];
     this.#taskCount = 0;
+    this.#sortMethodName = "default";
   }
 
   #generateId() {
@@ -37,8 +39,7 @@ class TaskList {
     return `${prefix}-${this.#taskCount}`;
   }
 
-  addTask(description) {
-    const task = new Task(description);
+  addTask(task) {
     const id = this.#generateId();
     this.#tasksWithId.push({ id, task });
   }
@@ -58,29 +59,21 @@ class TaskList {
   }
 
   report() {
-    return this.#tasksWithId.map(({ id, task }) => {
+    const sortMethod = {
+      group: (a, b) => a.isMarked === true ? 0 : -1,
+      alphabetically: (a, b) => a.description > b.description ? 1 : -1,
+      default: (a, b) => 0
+    };
+    const reportDetails = this.#tasksWithId.map(({ id, task }) => {
       const { description, isMarked } = task.getDetails();
       return { id, description, isMarked };
     });
-  }
 
-  #groupByDone() {
-    const tasks = this.report();
-    return tasks.toSorted((a, b) => a.isMark === true ? 1 : -1);
-  }
-
-  #sortByAlphabetically() {
-    const tasks = this.report();
-    return tasks.toSorted((a, b) => a.description > b.description ? 1 : -1);
+    return reportDetails.toSorted(sortMethod[this.#sortMethodName]);
   }
 
   sortBy(methodName) {
-    // we need to change switch case;
-    switch (methodName) {
-      case "group": return this.#groupByDone();
-      case "alphabetically": return this.#sortByAlphabetically();
-      default: return this.report();
-    };
+    this.#sortMethodName = methodName;
   }
 
 };
@@ -93,6 +86,7 @@ class TaskListView {
   #title;
   #headingElement;
   #toggleMark;
+  #selectElement;
 
   constructor(title) {
     this.#title = title
@@ -100,6 +94,7 @@ class TaskListView {
 
   createInitialTemplate() {
     // we need to move some where else.
+    // use mapper to create this;
     this.#todoPage = document.createElement("div");
     this.#todoPage.classList.add("todoPage");
 
@@ -116,11 +111,33 @@ class TaskListView {
     this.#addButton.value = "Add";
     this.#addButton.id = "add-button";
 
+    this.#selectElement = document.createElement("select");
+    this.#selectElement.id = "select-sort-method";
+
+
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "default";
+    defaultOption.innerText = "Default";
+
+    // check name here.
+    const alphabeticallyOption = document.createElement("option");
+    alphabeticallyOption.value = "alphabetically";
+    alphabeticallyOption.innerText = "Alphabetically";
+
+    const groupOption = document.createElement("option");
+    groupOption.value = "group";
+    groupOption.innerText = "Group";
+
+    this.#selectElement.appendChild(defaultOption);
+    this.#selectElement.appendChild(alphabeticallyOption);
+    this.#selectElement.appendChild(groupOption);
+
     this.#taskListContainer = document.createElement("ol");
 
     this.#todoPage.appendChild(this.#headingElement);
     this.#todoPage.appendChild(this.#inputBox);
     this.#todoPage.appendChild(this.#addButton);
+    this.#todoPage.appendChild(this.#selectElement);
     this.#todoPage.appendChild(this.#taskListContainer);
 
     document.body.appendChild(this.#todoPage);
@@ -149,6 +166,10 @@ class TaskListView {
 
   onclickTask(toggleMark) {
     this.#toggleMark = toggleMark;
+  }
+
+  onChangeSortMethod(setSortMethod) {
+    this.#selectElement.onchange = setSortMethod;
   }
 
   render(tasksDetail) {
@@ -182,13 +203,20 @@ class TaskListController {
     this.#taskListView.createInitialTemplate();
 
     this.#taskListView.onclickAdd((description) => {
-      this.#taskList.addTask(description);
+      const task = new Task(description);
+      this.#taskList.addTask(task);
       this.render();
     });
 
     this.#taskListView.onclickTask((event) => {
       const taskElement = event.target;
       this.#taskList.toggleMark(taskElement.id);
+      this.render();
+    });
+
+    this.#taskListView.onChangeSortMethod((event) => {
+      const methodName = event.target.value;
+      this.#taskList.sortBy(methodName);
       this.render();
     });
   }
@@ -203,7 +231,7 @@ const setupTodo = (title) => {
 
 const main = () => {
   setupTodo("study");
-
+  // setupTodo("work");
 };
 
 window.onload = main;
