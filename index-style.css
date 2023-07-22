@@ -8,6 +8,7 @@
 body {
   width: 40%;
   margin: 0em auto;
+  border: 1px solid black;
 }
 
 #heading {
@@ -28,11 +29,17 @@ body {
 #add-button {
   height: 1.5em;
   width: 15%;
+  cursor: pointer;
 }
 
 #select-sort-method {
   height: 1.5em;
   width: 7.5em;
+  cursor: pointer;
+}
+
+ol {
+  padding-left: 1em;
 }
 
 li {
@@ -43,7 +50,7 @@ li {
 
 li:hover .remove-button {
   display: inline;
-  background: url("icons8-delete-document-64.png");
+  /* background: url("icons8-delete-document-64.png"); */
   background-size: contain;
 }
 

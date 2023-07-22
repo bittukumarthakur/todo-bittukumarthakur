@@ -77,6 +77,20 @@ const main = () => {
 where are you creating the taskElement ==> at that time connect the delete button to 
 taskElement;
 
-## todo
-change alphabetically to alphabet;
-and use mapper to create elements;
+## taskList-manager/controller/
+- it will handle multiple taskList;
+taskListController.addTaskList(taskList);
+taskListController.report(); => it will give all the data.
+
+## input Controller
+- it will control the input and output;
+io.render();
+io.start(); => it will attach the listener;
+
+## model
+- task
+- taskList
+- taskLists
+- taskListsController
+
+
