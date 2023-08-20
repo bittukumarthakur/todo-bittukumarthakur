@@ -6,6 +6,7 @@ class TaskListView {
   #toggleMark;
   #removeTask;
   #changeSortMethod;
+  #removeTaskList;
 
   constructor() {
   };
@@ -48,6 +49,10 @@ class TaskListView {
 
   onclickAddTask(addTask) {
     this.#addTask = addTask;
+  }
+
+  onclickRemoveTaskList(removeTaskList) {
+    this.#removeTaskList = removeTaskList;
   }
 
   #clearTaskListContainer() {
@@ -103,6 +108,9 @@ class TaskListView {
     addTaskButton.value = "Add";
     addTaskButton.classList.add("add-button");
 
+    const removeTaskListButton = this.#createRemoveButton();
+    removeTaskListButton.onclick = () => this.#removeTaskList(taskListId);
+
     addTaskButton.onclick = () => {
       const description = addTaskInputBox.value;
       this.#addTask(taskListId, description);
@@ -112,7 +120,7 @@ class TaskListView {
     wrapper.classList.add("input-wrapper");
     const selectElement = this.#createSelectElement(sortMethodName);
     selectElement.onchange = (event) => this.#changeSortMethod(taskListId, event.target.value);
-    wrapper.append(addTaskInputBox, addTaskButton, selectElement);
+    wrapper.append(addTaskInputBox, addTaskButton, selectElement, removeTaskListButton);
 
     return wrapper;
   }

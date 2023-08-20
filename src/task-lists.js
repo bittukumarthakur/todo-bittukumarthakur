@@ -33,6 +33,13 @@ class TaskLists {
     taskList.removeTask(taskId);
   }
 
+  removeTaskList(id) {
+    this.#taskLists = this.#taskLists.filter(({ taskListId }) => taskListId !== id
+    );
+
+    console.log(JSON.stringify(this.#taskLists));
+  }
+
   toggleMark(taskListId, taskId) {
     const taskList = this.#getTaskList(taskListId);
     taskList.toggleMark(taskId);

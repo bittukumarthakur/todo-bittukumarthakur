@@ -44,6 +44,12 @@ class TaskListsController {
       console.log(taskListId, methodName);
       this.render();
     });
+
+    this.#taskListsView.onclickRemoveTaskList((taskListId) => {
+      this.#taskLists.removeTaskList(taskListId);
+      console.log(taskListId);
+      this.render();
+    });
   }
 
   loadTaskLists(taskListsDetail) {

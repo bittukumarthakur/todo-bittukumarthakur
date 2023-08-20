@@ -58,7 +58,6 @@ const serveHomePage = (request, response) => {
 const setupRoutes = (router) => {
   router.fallback(defaultHandler);
   router.route("/", "GET", serveHomePage);
-
 };
 
 module.exports = { setupRoutes };
