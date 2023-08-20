@@ -7,7 +7,6 @@ class TodoStorage {
   }
 
   save(data) {
-    console.log(">>", data);
     localStorage.setItem("todo", JSON.stringify(data));
   }
 }

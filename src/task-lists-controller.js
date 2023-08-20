@@ -47,7 +47,6 @@ class TaskListsController {
   }
 
   loadTaskLists(taskListsDetail) {
-    console.log(taskListsDetail);
     this.#taskLists.load(taskListsDetail);
   }
 
