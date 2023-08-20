@@ -3,24 +3,41 @@ class TaskListView {
   #inputBox;
   #addButton;
   #taskListContainer;
-  #title;
   #headingElement;
   #toggleMark;
   #selectElement;
   #removeTask;
 
-  constructor(title) {
-    this.#title = title;
+  #tasklistInputBox;
+  #addTaskListButton;
+
+  constructor() {
+    this.initialTemplate();
   };
 
-  createInitialTemplate() {
+  initialTemplate() {
+    this.#tasklistInputBox = document.createElement("input");
+    this.#tasklistInputBox.type = "text";
+    this.#tasklistInputBox.placeholder = "Title of task list";
+    this.#tasklistInputBox.classList.add("input-box");
+
+    this.#addTaskListButton = document.createElement("input");
+    this.#addTaskListButton.type = "button";
+    this.#addTaskListButton.value = "Add";
+    this.#addTaskListButton.classList.add("add-button");
+
+
+    document.body.append(this.#tasklistInputBox, this.#addTaskListButton);
+  }
+
+  createTaskListTemplate(title) {
     // we need to move some where else.
     // use mapper to create this;
     this.#todoPage = document.createElement("div");
     this.#todoPage.classList.add("todoPage");
 
     this.#headingElement = document.createElement("h2");
-    this.#headingElement.innerText = this.#title;
+    this.#headingElement.innerText = title;
 
     this.#inputBox = document.createElement("input");
     this.#inputBox.type = "text";
@@ -30,11 +47,10 @@ class TaskListView {
     this.#addButton = document.createElement("input");
     this.#addButton.type = "button";
     this.#addButton.value = "Add";
-    this.#addButton.id = "add-button";
+    this.#addButton.classList.add("add-button");
 
     this.#selectElement = document.createElement("select");
     this.#selectElement.id = "select-sort-method";
-
 
     const defaultOption = document.createElement("option");
     defaultOption.value = "default";
@@ -78,6 +94,14 @@ class TaskListView {
     elements.forEach(element => element.remove());
   }
 
+  onclickAddTaskList(addTasklist) {
+    this.#addTaskListButton.onclick = () => {
+      const title = this.#tasklistInputBox.value;
+      addTasklist(title);
+    };
+
+  }
+
   onclickAdd(addTask) {
     this.#addButton.onclick = () => {
       const description = this.#inputBox.value;
@@ -106,6 +130,7 @@ class TaskListView {
   }
 
   render(tasksDetail) {
+    console.log(JSON.stringify(tasksDetail));
     this.#clearTaskListContainer();
 
     tasksDetail.forEach((taskDetail) => {

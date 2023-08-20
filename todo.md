@@ -52,7 +52,7 @@ controller.start(); => {
    addTaskButton.onclick = () => {
    const description = taskDescriptionBox.value; 
    const task = new Task(description);
-   controller.addTask(task);
+  `` controller.addTask(task);
    controller.render();
   };
 
@@ -94,3 +94,97 @@ io.start(); => it will attach the listener;
 - taskListsController
 
 
+## client and server;
+{url: "/", method:"Get"} => home page(no data);
+{url: "/taskList": "Get"} => return task list data, => i will add that data to home page;
+{url: "/taskList": "Post" } => it will send task detail, => return new task, that i will add to taskList;
+
+## flow 
+localhost:8000/ => it will serve a home page of todo/taskList;
+i will request for task list data => {tak1,task2,task3};
+render that task list data to home-page;
+
+# on click addTask
+i will send a task data to server => {url: "/taskList": "Post" } => return new task data;
+then i will add that task to todo;
+
+# grouping 
+it will handled by client side;
+
+---------------------------------------------------------------------
+
+# Contract
+task-lists --> task-list --> task
+
+## Home page
+client: GET / HTTP/1.1 <== Todo home page;
+server: 200 ok ==> browser will render home page;
+body: {
+  home page html
+  }
+
+## fetch Task-lists data
+client: GET /task-lists HTTP/1.1 <== fetching task-lists data;
+server: 200 Ok ==> browser take data and display it by modifying view;
+body: { task lists data}
+
+## ADD Task-list
+client: POST /task-lists HTTP/1.1 <== add task list;
+body: {
+  taskListTitle: "taskList-1"
+  } 
+
+server: 201 created ==> browser will create task list;
+body: {
+  taskListID: "taskList#1"
+  }
+
+## Add Task
+client: POST /task-lists/tasks HTTP/1.1 <== add task;
+body: {
+  taskListID: taskList#1,
+ taskDescription: "learn html" 
+}
+
+server: 201 created ==> browser will create task and add to task list;
+body: {
+  taskListID: taskList#1
+  task: {taskId: task#1, description: "learn html" }
+  }
+
+## Delete Task
+client: DELETE /task-lists/tasks HTTP/1.1 <== delete task;
+body: {
+  taskListID: taskList#1,
+  taskId: task#1
+}
+
+200 ok ==> browser will request for updated data;
+
+## Toggle task status;
+client: PATCH /task-lists/tasks HTTP/1.1 <==  task;
+body: {
+  taskListID: taskList#1,
+  taskId: task#1,
+  isDone: true
+}
+
+204 No Content ==> then browser will request for details; 
+
+## Sorting methods;
+client: PATCH /task-lists HTTP/1.1 <== sort by group;
+body: {
+  taskListID: taskList#1,
+  taskId: task#1,
+  sortMethod: "group"
+}
+
+204 No Content ==> then browser will sort the data; 
+
+
+## taskList 
+{
+  taskListId: "taskList",
+  taskListId: "taskList",
+  taskListId: "taskList",
+}

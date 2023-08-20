@@ -2,11 +2,17 @@ class TaskList {
   #tasksWithId;
   #taskCount;
   #sortMethodName;
+  #title;
 
-  constructor() {
+  constructor(title) {
+    this.#title = title;
     this.#tasksWithId = [];
     this.#taskCount = 0;
     this.#sortMethodName = "default";
+  }
+
+  getTitle() {
+    return this.#title;
   }
 
   #generateId() {
