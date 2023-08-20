@@ -55,8 +55,10 @@ class TaskList {
     return reportDetails.toSorted(sortMethod[this.#sortMethodName]);
   }
 
+  getSortMethodName() {
+    return this.#sortMethodName;
+  }
   sortBy(methodName) {
     this.#sortMethodName = methodName;
   }
-
 };

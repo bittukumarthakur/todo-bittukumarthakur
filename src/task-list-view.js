@@ -1,124 +1,58 @@
 class TaskListView {
-  #todoPage;
-  #inputBox;
-  #addButton;
-  #taskListContainer;
-  #headingElement;
-  #toggleMark;
-  #selectElement;
-  #removeTask;
-
-  #tasklistInputBox;
+  #taskListInputBox;
   #addTaskListButton;
+  #taskListsContainer;
+  #addTask;
+  #toggleMark;
+  #removeTask;
+  #changeSortMethod;
 
   constructor() {
-    this.initialTemplate();
   };
 
   initialTemplate() {
-    this.#tasklistInputBox = document.createElement("input");
-    this.#tasklistInputBox.type = "text";
-    this.#tasklistInputBox.placeholder = "Title of task list";
-    this.#tasklistInputBox.classList.add("input-box");
+    this.#taskListInputBox = document.createElement("input");
+    this.#taskListInputBox.type = "text";
+    this.#taskListInputBox.placeholder = "Title of task list";
+    this.#taskListInputBox.classList.add("input-box");
 
     this.#addTaskListButton = document.createElement("input");
     this.#addTaskListButton.type = "button";
     this.#addTaskListButton.value = "Add";
     this.#addTaskListButton.classList.add("add-button");
 
-
-    document.body.append(this.#tasklistInputBox, this.#addTaskListButton);
-  }
-
-  createTaskListTemplate(title) {
-    // we need to move some where else.
-    // use mapper to create this;
-    this.#todoPage = document.createElement("div");
-    this.#todoPage.classList.add("todoPage");
-
-    this.#headingElement = document.createElement("h2");
-    this.#headingElement.innerText = title;
-
-    this.#inputBox = document.createElement("input");
-    this.#inputBox.type = "text";
-    this.#inputBox.placeholder = "Type your task here";
-    this.#inputBox.classList.add("input-box");
-
-    this.#addButton = document.createElement("input");
-    this.#addButton.type = "button";
-    this.#addButton.value = "Add";
-    this.#addButton.classList.add("add-button");
-
-    this.#selectElement = document.createElement("select");
-    this.#selectElement.id = "select-sort-method";
-
-    const defaultOption = document.createElement("option");
-    defaultOption.value = "default";
-    defaultOption.innerText = "Default";
-
-    // check name here.
-    const alphabeticallyOption = document.createElement("option");
-    alphabeticallyOption.value = "alphabetically";
-    alphabeticallyOption.innerText = "Alphabetically";
-
-    const groupOption = document.createElement("option");
-    groupOption.value = "group";
-    groupOption.innerText = "Group";
-
-    this.#selectElement.appendChild(defaultOption);
-    this.#selectElement.appendChild(alphabeticallyOption);
-    this.#selectElement.appendChild(groupOption);
-
-    this.#taskListContainer = document.createElement("ol");
-
-    this.#todoPage.appendChild(this.#headingElement);
-    this.#todoPage.appendChild(this.#inputBox);
-    this.#todoPage.appendChild(this.#addButton);
-    this.#todoPage.appendChild(this.#selectElement);
-    this.#todoPage.appendChild(this.#taskListContainer);
-
-    document.body.appendChild(this.#todoPage);
-  }
-
-  #createElement({ id, description, isMarked }) {
-    const element = document.createElement("li");
-    element.innerText = description;
-    element.id = id;
-
-    if (isMarked) element.classList.add("mark");
-    return element;
-  }
-
-  #clearTaskListContainer() {
-    const elements = [...this.#taskListContainer.children];
-    elements.forEach(element => element.remove());
+    this.#taskListsContainer = document.createElement("div");
+    this.#taskListsContainer.id = "task-lists-container";
+    document.body.append(this.#taskListInputBox, this.#addTaskListButton, this.#taskListsContainer);
   }
 
   onclickAddTaskList(addTasklist) {
     this.#addTaskListButton.onclick = () => {
-      const title = this.#tasklistInputBox.value;
+      const title = this.#taskListInputBox.value;
+      this.#taskListInputBox.value = "";
       addTasklist(title);
     };
-
   }
 
-  onclickAdd(addTask) {
-    this.#addButton.onclick = () => {
-      const description = this.#inputBox.value;
-      addTask(description);
-    };
+  onChangeSortMethod(changeSortMethod) {
+    this.#changeSortMethod = changeSortMethod;
   }
 
-  onclickTask(toggleMark) {
-    this.#toggleMark = toggleMark;
-  }
-
-  onChangeSortMethod(setSortMethod) {
-    this.#selectElement.onchange = setSortMethod;
-  }
-
-  onclickRemove(removeTask) {
+  onclickRemoveTask(removeTask) {
     this.#removeTask = removeTask;
+  }
+
+  onclickToggleMark(toggleMark) {
+    this.#toggleMark = toggleMark;
+  };
+
+  onclickAddTask(addTask) {
+    this.#addTask = addTask;
+  }
+
+  #clearTaskListContainer() {
+    const elements = [...this.#taskListsContainer.children];
+    elements.forEach(element => element.remove());
   }
 
   #createRemoveButton() {
@@ -129,22 +63,92 @@ class TaskListView {
     return removeButton;
   }
 
-  render(tasksDetail) {
-    console.log(JSON.stringify(tasksDetail));
-    this.#clearTaskListContainer();
+  #createTitleElement(title) {
+    const element = document.createElement("h2");
+    element.innerText = title;
+    return element;
+  }
 
-    tasksDetail.forEach((taskDetail) => {
-      const taskElement = this.#createElement(taskDetail);
+  #createSelectElement(sortMethodName) {
+    const selectElement = document.createElement("select");
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "default";
+    defaultOption.innerText = "Default";
+
+    const alphabeticallyOption = document.createElement("option");
+    alphabeticallyOption.value = "alphabetically";
+    alphabeticallyOption.innerText = "Alphabetically";
+
+    const groupOption = document.createElement("option");
+    groupOption.value = "group";
+    groupOption.innerText = "Group";
+
+    selectElement.append(defaultOption, alphabeticallyOption, groupOption);
+    const sortMethod = [defaultOption, alphabeticallyOption, groupOption]
+      .find((sort) => sort.value === sortMethodName);
+
+    sortMethod.setAttribute("selected", "");
+    return selectElement;
+  }
+
+  #createAddTaskInputBox(taskListId, sortMethodName) {
+    const addTaskInputBox = document.createElement("input");
+    addTaskInputBox.type = "text";
+    addTaskInputBox.id = `${taskListId}`; // id;
+    addTaskInputBox.placeholder = "Task description";
+    addTaskInputBox.classList.add("input-box");
+
+    const addTaskButton = document.createElement("input");
+    addTaskButton.type = "button";
+    addTaskButton.value = "Add";
+    addTaskButton.classList.add("add-button");
+
+    addTaskButton.onclick = () => {
+      const description = addTaskInputBox.value;
+      this.#addTask(taskListId, description);
+    };
+
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("input-wrapper");
+    const selectElement = this.#createSelectElement(sortMethodName);
+    selectElement.onchange = (event) => this.#changeSortMethod(taskListId, event.target.value);
+    wrapper.append(addTaskInputBox, addTaskButton, selectElement);
+
+    return wrapper;
+  }
+
+  #createTaskElements(taskListId, taskListDetail) {
+    return taskListDetail.map(({ id: taskId, description, isMarked }) => {
+      const taskElement = document.createElement("p");
       const removeButton = this.#createRemoveButton();
-      taskElement.appendChild(removeButton);
-      removeButton.onclick = (event) => {
-        event.stopPropagation();
-        this.#removeTask(taskDetail.id);
-      };
-      taskElement.onclick = this.#toggleMark;
+      const wrapper = document.createElement("div");
 
-      this.#taskListContainer.appendChild(taskElement);
+      wrapper.classList.add("task");
+      taskElement.innerText = description;
+      taskElement.id = `${taskListId}/${taskId}`;
+      taskElement.onclick = () => this.#toggleMark(taskListId, taskId);
+      removeButton.onclick = () => this.#removeTask(taskListId, taskId);
+
+      if (isMarked) taskElement.classList.add("mark");
+      wrapper.append(taskElement, removeButton);
+      return wrapper;
     });
+  }
+
+  #createTaskListElement(taskList) {
+    const { taskListId, title, taskListDetail, sortMethodName } = taskList;
+    const taskListContainer = document.createElement("div");
+    const titleElement = this.#createTitleElement(title);
+    const taskListInputBox = this.#createAddTaskInputBox(taskListId, sortMethodName);
+    const taskElements = this.#createTaskElements(taskListId, taskListDetail);
+
+    taskListContainer.append(titleElement, taskListInputBox, ...taskElements);
+    this.#taskListsContainer.append(taskListContainer);
+  }
+
+  render(taskLists) {
+    this.#clearTaskListContainer();
+    taskLists.forEach((taskList) => this.#createTaskListElement(taskList));
   }
 
 };

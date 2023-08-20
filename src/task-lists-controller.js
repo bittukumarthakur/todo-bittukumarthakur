@@ -10,45 +10,41 @@ class TaskListsController {
   render() {
     const taskListsDetail = this.#taskLists.report();
     this.#taskListsView.render(taskListsDetail);
-    console.log(taskListsDetail);
   }
 
-  attachListener(taskList) {
+  #attachListener() {
+    this.#taskListsView.onclickAddTaskList((title) => {
+      const taskList = new TaskList(title);
+      this.#taskLists.addTaskList(taskList);
+      this.render();
+    });
 
-    this.#taskListsView.onclickAdd((description) => {
+    this.#taskListsView.onclickAddTask((taskListId, description) => {
       const task = new Task(description);
-      taskList.addTask(task);
+      this.#taskLists.addTask(taskListId, task);
       this.render();
     });
 
-    this.#taskListsView.onclickTask((event) => {
-      const taskElement = event.target;
-      taskList.toggleMark(taskElement.id);
+    this.#taskListsView.onclickToggleMark((taskListId, taskId) => {
+      this.#taskLists.toggleMark(taskListId, taskId);
       this.render();
     });
 
-    this.#taskListsView.onChangeSortMethod((event) => {
-      const methodName = event.target.value;
-      taskList.sortBy(methodName);
+    this.#taskListsView.onclickRemoveTask((taskListId, taskId) => {
+      this.#taskLists.removeTask(taskListId, taskId);
       this.render();
     });
 
-    this.#taskListsView.onclickRemove((taskId) => {
-      taskList.removeTask(taskId);
+    this.#taskListsView.onChangeSortMethod((taskListId, methodName) => {
+      this.#taskLists.sortBy(taskListId, methodName);
+      console.log(taskListId, methodName);
       this.render();
     });
   }
-
-  addTasklist() {
-    const taskList = new TaskList();
-    this.#taskLists.addTask(taskList);
-    this.attachListener(taskList);
-    this.render();
-  };
 
   start() {
-    this.#taskListsView.createInitialTemplate();
+    this.#taskListsView.initialTemplate();
+    this.#attachListener();
     this.render();
   }
-
 };

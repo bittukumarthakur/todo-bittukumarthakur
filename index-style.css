@@ -6,7 +6,7 @@
 }
 
 body {
-  width: 40%;
+  width: 45%;
   margin: 0em auto;
   border: 1px solid black;
 }
@@ -61,6 +61,16 @@ li:hover .remove-button {
   background: transparent;
   color: rgb(253, 37, 88);
   border: none;
-  display: none;
+  /* display: none; */
   cursor: pointer;
+}
+
+.task {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.input-wrapper {
+  display: flex;
+  flex-wrap: wrap;
 }
