@@ -7,6 +7,10 @@ class Task {
     this.#mark = false;
   }
 
+  setStatusMark(mark) {
+    this.#mark = mark;
+  }
+
   toggleMark() {
     this.#mark = !this.#mark;
   }

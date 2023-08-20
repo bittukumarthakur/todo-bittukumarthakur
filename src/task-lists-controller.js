@@ -1,15 +1,19 @@
 class TaskListsController {
   #taskLists;
   #taskListsView;
+  #todoStorage;
 
-  constructor(taskLists, taskListsView) {
+  constructor(taskLists, taskListsView, todoStorage) {
     this.#taskLists = taskLists;
     this.#taskListsView = taskListsView;
+    this.#todoStorage = todoStorage;
   }
 
   render() {
     const taskListsDetail = this.#taskLists.report();
     this.#taskListsView.render(taskListsDetail);
+
+    this.#todoStorage.save(taskListsDetail);
   }
 
   #attachListener() {
@@ -42,7 +46,13 @@ class TaskListsController {
     });
   }
 
+  loadTaskLists(taskListsDetail) {
+    console.log(taskListsDetail);
+    this.#taskLists.load(taskListsDetail);
+  }
+
   start() {
+    this.loadTaskLists(this.#todoStorage.getDetails());
     this.#taskListsView.initialTemplate();
     this.#attachListener();
     this.render();

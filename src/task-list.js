@@ -58,7 +58,17 @@ class TaskList {
   getSortMethodName() {
     return this.#sortMethodName;
   }
+
   sortBy(methodName) {
     this.#sortMethodName = methodName;
+  }
+
+  load(taskListDetail, sortMethodName) {
+    this.#tasksWithId = taskListDetail.map(({ id, description, isMarked }) => {
+      const task = new Task(description);
+      task.setStatusMark(isMarked);
+      this.sortBy(sortMethodName);
+      return { id, task };
+    });
   }
 };

@@ -1,7 +1,8 @@
 const main = () => {
   const todo = new TaskLists();
   const view = new TaskListView();
-  const controller = new TaskListsController(todo, view);
+  const todoStorage = new TodoStorage();
+  const controller = new TaskListsController(todo, view, todoStorage);
   controller.start();
 };
 
