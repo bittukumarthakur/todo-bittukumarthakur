@@ -1,4 +1,5 @@
 const fs = require("node:fs");
+const { TaskList } = require("./task-list");
 
 const MIME_TYPE = {
   html: "text/html",
@@ -55,8 +56,11 @@ const serveHomePage = (request, response) => {
 };
 
 const createTaskList = (request, response) => {
-  const { todoData } = request.context;
-  todoData.push(JSON.parse(request.body));
+  const { taskLists } = request.context;
+  const { title } = JSON.parse(request.body);
+  const taskList = new TaskList(title);
+  taskLists.addTaskList(taskList);
+
   response.writeHead(204);
   response.end();
 };
@@ -83,9 +87,9 @@ const toggleTaskStatus = (request, response) => {
 };
 
 const serveTaskListsDetail = (request, response) => {
-  const { todoData } = request.context;
+  const { taskLists } = request.context;
   response.writeHead(200, { "Content-Type": "application/json" });
-  response.end(todoData);
+  response.end(JSON.stringify(taskLists.report()));
 };
 
 const setupRoutes = (router) => {
