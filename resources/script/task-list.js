@@ -66,6 +66,7 @@ class TaskList {
   load(taskListDetail, sortMethodName) {
     this.#tasksWithId = taskListDetail.map(({ id, description, isMarked }) => {
       const task = new Task(description);
+      this.#taskCount++;
       task.setStatusMark(isMarked);
       this.sortBy(sortMethodName);
       return { id, task };

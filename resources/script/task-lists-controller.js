@@ -25,85 +25,109 @@ class TaskListsController {
     this.#todoStorage.save(taskListsDetail);
   }
 
+  #addTaskList(title) {
+    const taskList = new TaskList(title);
+    this.#taskLists.addTaskList(taskList);
+    this.render();
+
+    const option = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ taskListTitle: title })
+    };
+
+    fetch("/task-lists", option);
+  }
+
+  #addTask(taskListId, taskDescription) {
+    const task = new Task(taskDescription);
+    this.#taskLists.addTask(taskListId, task);
+    this.render();
+
+    const option = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ taskListId, taskDescription })
+    };
+
+    fetch("/task-lists/tasks", option);
+  }
+
+  #toggleStatusMark(taskListId, taskId) {
+    this.#taskLists.toggleMark(taskListId, taskId);
+    this.render();
+
+    const option = {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ taskListId, taskId })
+    };
+
+    fetch("/task-lists/tasks", option);
+  }
+
+  #removeTask(taskListId, taskId) {
+    this.#taskLists.removeTask(taskListId, taskId);
+    this.render();
+
+    const option = {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ taskListId, taskId })
+    };
+
+    fetch("/task-lists/tasks", option);
+  }
+
+  #changeSortMethod(taskListId, methodName) {
+    this.#taskLists.sortBy(taskListId, methodName);
+    this.render();
+
+    const option = {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ taskListId, methodName })
+    };
+
+    fetch("/task-lists", option);
+  }
+
+  #removeTaskList(taskListId) {
+    this.#taskLists.removeTaskList(taskListId);
+    this.render();
+
+    const option = {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ taskListId })
+    };
+
+    fetch("/task-lists", option);
+  }
+
   #attachListener() {
     this.#taskListsView.onclickAddTaskList((title) => {
-      const taskList = new TaskList(title);
-      this.#taskLists.addTaskList(taskList);
-      this.render();
-
-      const option = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ taskListTitle: title })
-      };
-
-      fetch("/task-lists", option);
+      this.#addTaskList(title);
     });
 
     this.#taskListsView.onclickAddTask((taskListId, taskDescription) => {
-      const task = new Task(taskDescription);
-      this.#taskLists.addTask(taskListId, task);
-      this.render();
-
-      const option = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ taskListId, taskDescription })
-      };
-
-      fetch("/task-lists/tasks", option);
+      this.#addTask(taskListId, taskDescription);
     });
 
     this.#taskListsView.onclickToggleMark((taskListId, taskId) => {
-      this.#taskLists.toggleMark(taskListId, taskId);
-      this.render();
-
-      const option = {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ taskListId, taskId })
-      };
-
-      fetch("/task-lists/tasks", option);
+      this.#toggleStatusMark(taskListId, taskId);
     });
 
     this.#taskListsView.onclickRemoveTask((taskListId, taskId) => {
-      this.#taskLists.removeTask(taskListId, taskId);
-      this.render();
-
-      const option = {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ taskListId, taskId })
-      };
-
-      fetch("/task-lists/tasks", option);
+      this.#removeTask(taskListId, taskId);
     });
 
     this.#taskListsView.onChangeSortMethod((taskListId, methodName) => {
-      this.#taskLists.sortBy(taskListId, methodName);
-      this.render();
-
-      const option = {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ taskListId, methodName })
-      };
-
-      fetch("/task-lists", option);
+      this.#changeSortMethod(taskListId, methodName);
     });
 
     this.#taskListsView.onclickRemoveTaskList((taskListId) => {
-      this.#taskLists.removeTaskList(taskListId);
-      this.render();
-
-      const option = {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ taskListId })
-      };
-
-      fetch("/task-lists", option);
+      this.#removeTaskList(taskListId);
     });
   }
 

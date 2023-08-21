@@ -86,7 +86,7 @@ const serveTaskListsDetail = (request, response) => {
   const { todoData } = request.context;
   response.writeHead(200, { "Content-Type": "application/json" });
   response.end(todoData);
-}
+};
 
 const setupRoutes = (router) => {
   router.fallback(defaultHandler);
