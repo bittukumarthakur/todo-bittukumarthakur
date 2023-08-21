@@ -23,7 +23,7 @@ module.exports = {
     "no-eval": ["error"],
 
     "max-classes-per-file": ["error", 3],
-    "max-params": ["warn", 3],
+    "max-params": ["warn", 4],
     "max-lines-per-function": ["error", 50],
     "max-depth": ["error", 3]
   }

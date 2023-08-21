@@ -1,3 +1,13 @@
+const request = (url, method, body, promise) => {
+  const option = {
+    method,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  };
+
+  fetch(url, option).then(promise);
+};
+
 class TodoService {
   #taskLists;
   #todoStorage;
@@ -15,84 +25,42 @@ class TodoService {
     this.#todoStorage.save(this.#taskLists.report());
   }
 
-  addTaskList(title) {
+  addTaskList(title, render) {
     const taskList = new TaskList(title);
     this.#taskLists.addTaskList(taskList);
     this.saveTaskListsDetails();
-
-    const option = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title })
-    };
-
-    fetch("/task-lists/tasks", option);
+    request("/task-lists", "POST", { title }, render);
   }
 
-  addTask(taskListId, taskDescription) {
+  addTask(taskListId, taskDescription, render) {
     const task = new Task(taskDescription);
     this.#taskLists.addTask(taskListId, task);
     this.saveTaskListsDetails();
-
-    const option = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ taskListId, taskDescription })
-    };
-
-    fetch("/task-lists/tasks", option);
+    request("/task-lists/tasks", "POST", { taskListId, taskDescription }, render);
   }
 
-  toggleStatusMark(taskListId, taskId) {
+  toggleStatusMark(taskListId, taskId, render) {
     this.#taskLists.toggleMark(taskListId, taskId);
     this.saveTaskListsDetails();
-
-    const option = {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ taskListId, taskId })
-    };
-
-    fetch("/task-lists/tasks", option);
+    request("/task-lists/tasks", "PATCH", { taskListId, taskId }, render);
   }
 
-  removeTask(taskListId, taskId) {
+  removeTask(taskListId, taskId, render) {
     this.#taskLists.removeTask(taskListId, taskId);
     this.saveTaskListsDetails();
-
-    const option = {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ taskListId, taskId })
-    };
-
-    fetch("/task-lists/tasks", option);
+    request("/task-lists/tasks", "DELETE", { taskListId, taskId }, render);
   }
 
-  changeSortMethod(taskListId, methodName) {
+  changeSortMethod(taskListId, methodName, render) {
     this.#taskLists.sortBy(taskListId, methodName);
     this.saveTaskListsDetails();
-
-    const option = {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ taskListId, methodName })
-    };
-
-    fetch("/task-lists", option);
+    request("/task-lists", "PATCH", { taskListId, methodName }, render);
   }
 
-  removeTaskList(taskListId) {
+  removeTaskList(taskListId, render) {
     this.#taskLists.removeTaskList(taskListId);
     this.saveTaskListsDetails();
-
-    const option = {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ taskListId })
-    };
-
-    fetch("/task-lists", option);
+    request("/task-lists", "DELETE", { taskListId }, render);
   }
 
   getAll() {
