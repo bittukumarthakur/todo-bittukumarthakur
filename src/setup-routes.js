@@ -31,7 +31,6 @@ const getHeaders = (filepath) => {
   return HEADERS[extension];
 };
 
-
 const serveFile = (filepath, response) => {
   fs.readFile(filepath, (error, body) => {
     if (error) {
@@ -46,7 +45,7 @@ const serveFile = (filepath, response) => {
 };
 
 const defaultHandler = (request, response) => {
-  const path = "." + request.url;
+  const path = "./resources" + request.url;
   serveFile(path, response);
 };
 
@@ -55,9 +54,49 @@ const serveHomePage = (request, response) => {
   serveFile(PATHS.HOME_PAGE, response);
 };
 
+const createTaskList = (request, response) => {
+  const { todoData } = request.context;
+  todoData.push(JSON.parse(request.body));
+  response.writeHead(204);
+  response.end();
+};
+
+const addTask = (request, response) => {
+  const { todoData } = request.context;
+  todoData.push(JSON.parse(request.body));
+  response.writeHead(204);
+  response.end();
+};
+
+const deleteTask = (request, response) => {
+  const { todoData } = request.context;
+  todoData.push(JSON.parse(request.body));
+  response.writeHead(204);
+  response.end();
+};
+
+const toggleTaskStatus = (request, response) => {
+  const { todoData } = request.context;
+  todoData.push(JSON.parse(request.body));
+  response.writeHead(204);
+  response.end();
+};
+
+const serveTaskListsDetail = (request, response) => {
+  const { todoData } = request.context;
+  response.writeHead(200, { "Content-Type": "application/json" });
+  response.end(todoData);
+}
+
 const setupRoutes = (router) => {
   router.fallback(defaultHandler);
   router.route("/", "GET", serveHomePage);
+  router.route("/task-lists", "GET", serveTaskListsDetail);
+  router.route("/task-lists", "POST", createTaskList);
+  router.route("/task-lists/tasks", "POST", addTask);
+  router.route("/task-lists/tasks", "DELETE", deleteTask);
+  router.route("/task-lists/tasks", "PATCH", toggleTaskStatus);
+
 };
 
 module.exports = { setupRoutes };

@@ -73,4 +73,5 @@ li:hover .remove-button {
 .input-wrapper {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }

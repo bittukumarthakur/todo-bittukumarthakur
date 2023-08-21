@@ -34,10 +34,7 @@ class TaskLists {
   }
 
   removeTaskList(id) {
-    this.#taskLists = this.#taskLists.filter(({ taskListId }) => taskListId !== id
-    );
-
-    console.log(JSON.stringify(this.#taskLists));
+    this.#taskLists = this.#taskLists.filter(({ taskListId }) => taskListId !== id);
   }
 
   toggleMark(taskListId, taskId) {

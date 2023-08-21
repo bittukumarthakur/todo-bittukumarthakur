@@ -7,17 +7,18 @@ const logger = ({ url, method }) => console.log({ url, method });
 
 const config = {
   PATHS: {
-    HOME_PAGE: "./index.html",
+    HOME_PAGE: "./resources/page/index.html",
   }
 };
 
 const main = () => {
   const router = new Router();
   setupRoutes(router);
+  const todoData = [];
 
   const server = http.createServer((request, response) => {
     logger(request);
-    request.context = { config };
+    request.context = { config, todoData };
     router.handle(request, response);
   });
 

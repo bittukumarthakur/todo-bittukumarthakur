@@ -175,7 +175,6 @@ body: {
 client: PATCH /task-lists HTTP/1.1 <== sort by group;
 body: {
   taskListID: taskList#1,
-  taskId: task#1,
   sortMethod: "group"
 }
 

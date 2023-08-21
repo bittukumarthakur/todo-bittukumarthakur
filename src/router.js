@@ -24,8 +24,15 @@ class Router {
 
   handle(request, response) {
     const { url, method } = request;
-    const handler = this.#findHandler(url, method);
-    handler(request, response);
+    let body = "";
+
+    request.on("data", (data) => body += data);
+    request.on("end", () => {
+      request.body = body;
+      const handler = this.#findHandler(url, method);
+      handler(request, response);
+    });
+
   }
 };
 
