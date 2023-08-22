@@ -98,12 +98,6 @@ const toggleTaskStatus = (request, response) => {
   response.end();
 };
 
-const serveTaskListsDetail = (request, response) => {
-  const { taskLists } = request.context;
-  response.writeHead(200, { "Content-Type": "application/json" });
-  response.end(JSON.stringify(taskLists.report()));
-};
-
 const removeTaskList = (request, response) => {
   const { taskLists, todoStorage } = request.context;
   const { taskListId } = JSON.parse(request.body);
@@ -112,6 +106,12 @@ const removeTaskList = (request, response) => {
 
   response.writeHead(204);
   response.end();
+};
+
+const serveTaskListsDetail = (request, response) => {
+  const { taskLists } = request.context;
+  response.writeHead(200, { "Content-Type": "application/json" });
+  response.end(JSON.stringify(taskLists.report()));
 };
 
 const setupRoutes = (router) => {

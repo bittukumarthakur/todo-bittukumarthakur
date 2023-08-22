@@ -64,7 +64,12 @@ class TodoService {
     request("/task-lists", "DELETE", { taskListId }, render);
   }
 
+  getTaskListsDetail() {
+    fetch("/task-lists").then((res) => res.json()).then(console.log);
+  }
+
   getAll() {
+    // this.getTaskListsDetail();
     return this.#taskLists.report();
   }
 
