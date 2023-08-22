@@ -187,3 +187,33 @@ body: {
   taskListId: "taskList",
   taskListId: "taskList",
 }
+
+## sorting 
+
+## client side 
+sortMethods: {
+task-list-1: "time",
+task-list-2: "alpha",
+}
+
+## from server 
+taskListDetails: [
+  {
+    "taskListId": "task-list-1",
+    "title": "office",
+    "taskListDetail": [
+      {
+        "id": "task-1",
+        "description": "learn js",
+        "isMarked": false
+      }
+    ]
+  }
+]
+
+## 
+
+data organizer;
+data formatter;
+
+

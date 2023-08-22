@@ -5,10 +5,6 @@ const { Task } = require("./task");
 const MIME_TYPE = {
   html: "text/html",
   ico: "image/vnd.microsoft.icon",
-  jpg: "image/jpeg",
-  jpeg: "image/jpeg",
-  gif: "image/gif",
-  pdf: "application/pdf",
   css: "text/css",
   js: "text/javascript",
   json: "application/json"
@@ -16,21 +12,9 @@ const MIME_TYPE = {
 
 const getContentHeaders = (extensionType) => ({ "Content-Type": MIME_TYPE[extensionType] });
 
-const HEADERS = {
-  html: getContentHeaders("html"),
-  ico: getContentHeaders("ico"),
-  jpg: getContentHeaders("jpg"),
-  jpeg: getContentHeaders("jpeg"),
-  gif: getContentHeaders("gif"),
-  css: getContentHeaders("css"),
-  js: getContentHeaders("js"),
-  json: getContentHeaders("json"),
-  pdf: { ...getContentHeaders("pdf"), "Content-Disposition": "attachment" }
-};
-
 const getHeaders = (filepath) => {
   const extension = filepath.split(".").at(-1);
-  return HEADERS[extension];
+  return getContentHeaders(extension);
 };
 
 const serveFile = (filepath, response) => {
