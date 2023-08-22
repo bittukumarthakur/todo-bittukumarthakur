@@ -9,8 +9,10 @@ const request = (url, method, body, promise) => {
 };
 
 class TodoService {
+  #taskListsFormatter;
 
-  constructor() {
+  constructor(taskListsFormatter) {
+    this.#taskListsFormatter = taskListsFormatter;
   }
 
   addTaskList(title, render) {
@@ -30,7 +32,8 @@ class TodoService {
   }
 
   changeSortMethod(taskListId, methodName, render) {
-    request("/task-lists", "PATCH", { taskListId, methodName }, render);
+    this.#taskListsFormatter.addSortMethod(taskListId, methodName);
+    render();
   }
 
   removeTaskList(taskListId, render) {
@@ -40,6 +43,9 @@ class TodoService {
   getTaskListsDetail(render) {
     fetch("/task-lists")
       .then((res) => res.json())
-      .then(render);
+      .then((taskLists) => {
+        this.#taskListsFormatter.setTaskLists(taskLists);
+        render(this.#taskListsFormatter.getTaskLists());
+      });
   }
 }

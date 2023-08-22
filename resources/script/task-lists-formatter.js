@@ -1,4 +1,4 @@
-class DataFormatter {
+class TaskListsFormatter {
   #taskListsSortType;
   #taskLists;
 
@@ -18,7 +18,7 @@ class DataFormatter {
     const sortMethods = {
       group: (taskA) => taskA.isMarked === true ? 0 : -1,
       alphabetically: (taskA, taskB) =>
-        taskA.description > taskB.description ? 1 : -1,
+        taskA.description > taskB.description ? 0 : -1,
       default: () => 0
     };
 
@@ -29,7 +29,7 @@ class DataFormatter {
   getTaskLists() {
     return this.#taskLists.map((taskList) => {
       const { taskListId, taskListDetail, title } = taskList;
-      const sortMethodName = this.#taskListsSortType[taskListId];
+      const sortMethodName = this.#taskListsSortType[taskListId] || "default";
       const sortedTaskListDetail = this.#sortBy(sortMethodName, taskListDetail);
 
       return { taskListId, title, sortMethodName, taskListDetail: sortedTaskListDetail };

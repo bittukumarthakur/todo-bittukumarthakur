@@ -43,34 +43,17 @@ class TaskList {
   }
 
   report() {
-    const sortMethod = {
-      group: (taskA) => taskA.isMarked === true ? 0 : -1,
-      alphabetically: (taskA, taskB) =>
-        taskA.description > taskB.description ? 1 : -1,
-      default: () => 0
-    };
-    const reportDetails = this.#tasksWithId.map(({ id, task }) => {
+    return this.#tasksWithId.map(({ id, task }) => {
       const { description, isMarked } = task.getDetails();
       return { id, description, isMarked };
     });
-
-    return reportDetails.toSorted(sortMethod[this.#sortMethodName]);
   }
 
-  getSortMethodName() {
-    return this.#sortMethodName;
-  }
-
-  sortBy(methodName) {
-    this.#sortMethodName = methodName;
-  }
-
-  load(taskListDetail, sortMethodName) {
+  load(taskListDetail) {
     this.#tasksWithId = taskListDetail.map(({ id, description, isMarked }) => {
       const task = new Task(description);
       this.#taskCount++;
       task.setStatusMark(isMarked);
-      this.sortBy(sortMethodName);
       return { id, task };
     });
   }

@@ -44,26 +44,21 @@ class TaskLists {
     taskList.toggleMark(taskId);
   }
 
-  sortBy(taskListId, methodName) {
-    const taskList = this.#getTaskList(taskListId);
-    taskList.sortBy(methodName);
-  }
-
   report() {
     return this.#taskLists.map(({ taskListId, taskList }) => {
       const taskListDetail = taskList.report();
       const title = taskList.getTitle();
-      const sortMethodName = taskList.getSortMethodName();
-      return { taskListId, title, sortMethodName, taskListDetail };
+      return { taskListId, title, taskListDetail };
     });
   };
 
   load(taskListsDetail) {
-    this.#taskLists = taskListsDetail.map(({ taskListId, title, taskListDetail, sortMethodName }) => {
+    this.#taskLists = taskListsDetail.map(({ taskListId, title, taskListDetail }) => {
       const taskList = new TaskList(title);
       const count = +taskListId.split("-").at(-1);
       this.#taskListCount = count;
-      taskList.load(taskListDetail, sortMethodName);
+      taskList.load(taskListDetail);
+
       return { taskListId, taskList };
     });
   }
