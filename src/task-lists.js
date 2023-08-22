@@ -61,7 +61,8 @@ class TaskLists {
   load(taskListsDetail) {
     this.#taskLists = taskListsDetail.map(({ taskListId, title, taskListDetail, sortMethodName }) => {
       const taskList = new TaskList(title);
-      this.#taskListCount++;
+      const count = +taskListId.split("-").at(-1);
+      this.#taskListCount = count;
       taskList.load(taskListDetail, sortMethodName);
       return { taskListId, taskList };
     });

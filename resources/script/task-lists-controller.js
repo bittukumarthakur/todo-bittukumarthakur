@@ -8,8 +8,13 @@ class TaskListsController {
   }
 
   render() {
-    const taskListsDetail = this.#todoService.getAll();
-    this.#taskListsView.render(taskListsDetail);
+
+    this.#todoService.getTaskListsDetail((taskListsDetail) => {
+      this.#taskListsView.render(taskListsDetail);
+    });
+
+    // const taskListsDetail = this.#todoService.getAll();
+    // this.#taskListsView.render(taskListsDetail);
   }
 
   #attachListeners() {

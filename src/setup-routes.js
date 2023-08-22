@@ -114,16 +114,26 @@ const serveTaskListsDetail = (request, response) => {
   response.end(JSON.stringify(taskLists.report()));
 };
 
+const changeSortMethod = (request, response) => {
+  const { taskLists, todoStorage } = request.context;
+  const { taskListId, methodName } = JSON.parse(request.body);
+  taskLists.sortBy(taskListId, methodName);
+  todoStorage.save(taskLists.report());
+
+  response.writeHead(204);
+  response.end();
+};
+
 const setupRoutes = (router) => {
   router.fallback(defaultHandler);
   router.route("/", "GET", serveHomePage);
   router.route("/task-lists", "GET", serveTaskListsDetail);
-  router.route("/task-lists", "POST", createTaskList); //done
-  router.route("/task-lists/tasks", "POST", addTask); // done
-  router.route("/task-lists/tasks", "DELETE", removeTask);  // done
-  router.route("/task-lists/tasks", "PATCH", toggleTaskStatus); // done
-  router.route("/task-lists", "DELETE", removeTaskList); // done
-
+  router.route("/task-lists", "POST", createTaskList);
+  router.route("/task-lists/tasks", "POST", addTask);
+  router.route("/task-lists/tasks", "DELETE", removeTask);
+  router.route("/task-lists/tasks", "PATCH", toggleTaskStatus);
+  router.route("/task-lists", "PATCH", changeSortMethod);
+  router.route("/task-lists", "DELETE", removeTaskList);
 };
 
 module.exports = { setupRoutes };
