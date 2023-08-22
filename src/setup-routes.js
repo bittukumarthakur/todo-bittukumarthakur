@@ -1,6 +1,4 @@
 const fs = require("node:fs");
-const { TaskList } = require("./task-list");
-const { Task } = require("./task");
 
 const MIME_TYPE = {
   html: "text/html",
@@ -40,69 +38,63 @@ const serveHomePage = (request, response) => {
   serveFile(PATHS.HOME_PAGE, response);
 };
 
-const createTaskList = (request, response) => {
-  const { taskLists, todoStorage } = request.context;
+const addTaskList = (request, response) => {
+  const { taskListController } = request.context;
   const { title } = JSON.parse(request.body);
-  const taskList = new TaskList(title);
-  taskLists.addTaskList(taskList);
-  todoStorage.save(taskLists.report());
+  taskListController.addTaskList(title);
 
   response.writeHead(204);
   response.end();
 };
 
 const addTask = (request, response) => {
-  const { taskLists, todoStorage } = request.context;
+  const { taskListController } = request.context;
   const { taskListId, taskDescription } = JSON.parse(request.body);
-  const task = new Task(taskDescription);
-  taskLists.addTask(taskListId, task);
-  todoStorage.save(taskLists.report());
+  taskListController.addTask(taskListId, taskDescription);
 
   response.writeHead(204);
   response.end();
 };
 
 const removeTask = (request, response) => {
-  const { taskLists, todoStorage } = request.context;
+  const { taskListController } = request.context;
   const { taskListId, taskId } = JSON.parse(request.body);
-  taskLists.removeTask(taskListId, taskId);
-  todoStorage.save(taskLists.report());
+  taskListController.removeTask(taskListId, taskId);
 
   response.writeHead(204);
   response.end();
 };
 
 const toggleTaskStatus = (request, response) => {
-  const { taskLists, todoStorage } = request.context;
+  const { taskListController } = request.context;
   const { taskListId, taskId } = JSON.parse(request.body);
-  taskLists.toggleMark(taskListId, taskId);
-  todoStorage.save(taskLists.report());
+  taskListController.toggleStatusMark(taskListId, taskId);
 
   response.writeHead(204);
   response.end();
 };
 
 const removeTaskList = (request, response) => {
-  const { taskLists, todoStorage } = request.context;
+  const { taskListController } = request.context;
   const { taskListId } = JSON.parse(request.body);
-  taskLists.removeTaskList(taskListId);
-  todoStorage.save(taskLists.report());
+  taskListController.removeTaskList(taskListId);
 
   response.writeHead(204);
   response.end();
 };
 
 const serveTaskListsDetail = (request, response) => {
-  const { taskLists } = request.context;
+  const { taskListController } = request.context;
   response.writeHead(200, { "Content-Type": "application/json" });
-  response.end(JSON.stringify(taskLists.report()));
+  const taskListsDetail = taskListController.getTaskListsDetail();
+  response.end(JSON.stringify(taskListsDetail));
 };
 
 const setupRoutes = (router) => {
   router.fallback(defaultHandler);
   router.route("/", "GET", serveHomePage);
   router.route("/task-lists", "GET", serveTaskListsDetail);
-  router.route("/task-lists", "POST", createTaskList);
+  router.route("/task-lists", "POST", addTaskList);
   router.route("/task-lists/tasks", "POST", addTask);
   router.route("/task-lists/tasks", "DELETE", removeTask);
   router.route("/task-lists/tasks", "PATCH", toggleTaskStatus);

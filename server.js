@@ -4,6 +4,8 @@ const { Router } = require("./src/router.js");
 const { setupRoutes } = require("./src/setup-routes.js");
 const { TaskLists } = require("./src/task-lists.js");
 const { TodoStorage } = require("./src/todo-storage.js");
+const { TaskListController } = require("./src/task-lists-controller.js");
+
 
 const PORT = 8000;
 const logger = ({ url, method }) => console.log({ url, method });
@@ -19,11 +21,12 @@ const main = () => {
   setupRoutes(router);
   const todoStorage = new TodoStorage(fs);
   const taskLists = new TaskLists();
+  const taskListController = new TaskListController(taskLists, todoStorage);
   taskLists.load(todoStorage.get());
 
   const server = http.createServer((request, response) => {
     logger(request);
-    request.context = { config, todoStorage, taskLists };
+    request.context = { config, taskListController };
     router.handle(request, response);
   });
 
