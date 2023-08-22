@@ -56,32 +56,33 @@ const serveHomePage = (request, response) => {
 };
 
 const createTaskList = (request, response) => {
-  const { taskLists } = request.context;
+  const { taskLists, todoStorage } = request.context;
   const { title } = JSON.parse(request.body);
   const taskList = new TaskList(title);
   taskLists.addTaskList(taskList);
+  todoStorage.save(taskLists.report());
 
   response.writeHead(204);
   response.end();
 };
 
 const addTask = (request, response) => {
-  const { todoData } = request.context;
-  todoData.push(JSON.parse(request.body));
+  const { taskLists } = request.context;
+  const { taskListId, taskDescription } = JSON.parse(request.body);
+  // taskLists.addTask(taskListId, taskDescription);
+
   response.writeHead(204);
   response.end();
 };
 
 const deleteTask = (request, response) => {
   const { todoData } = request.context;
-  todoData.push(JSON.parse(request.body));
   response.writeHead(204);
   response.end();
 };
 
 const toggleTaskStatus = (request, response) => {
   const { todoData } = request.context;
-  todoData.push(JSON.parse(request.body));
   response.writeHead(204);
   response.end();
 };
@@ -96,7 +97,7 @@ const setupRoutes = (router) => {
   router.fallback(defaultHandler);
   router.route("/", "GET", serveHomePage);
   router.route("/task-lists", "GET", serveTaskListsDetail);
-  router.route("/task-lists", "POST", createTaskList);
+  router.route("/task-lists", "POST", createTaskList); //done
   router.route("/task-lists/tasks", "POST", addTask);
   router.route("/task-lists/tasks", "DELETE", deleteTask);
   router.route("/task-lists/tasks", "PATCH", toggleTaskStatus);

@@ -1,3 +1,5 @@
+const { Task } = require("./task");
+
 class TaskList {
   #tasksWithId;
   #taskCount;

@@ -1,3 +1,5 @@
+const { TaskList } = require("./task-list");
+
 class TaskLists {
   #taskLists;
   #taskListCount;

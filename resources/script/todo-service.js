@@ -18,7 +18,8 @@ class TodoService {
   }
 
   load() {
-    this.#taskLists.load(this.#todoStorage.getDetails());
+    const taskListsDetail = this.#todoStorage.getDetails();
+    this.#taskLists.load(taskListsDetail);
   }
 
   saveTaskListsDetails() {
