@@ -8,13 +8,9 @@ class TaskListsController {
   }
 
   render() {
-
     this.#todoService.getTaskListsDetail((taskListsDetail) => {
       this.#taskListsView.render(taskListsDetail);
     });
-
-    // const taskListsDetail = this.#todoService.getAll();
-    // this.#taskListsView.render(taskListsDetail);
   }
 
   #attachListeners() {
@@ -45,7 +41,6 @@ class TaskListsController {
   }
 
   start() {
-    this.#todoService.load();
     this.#taskListsView.initialTemplate();
     this.#attachListeners();
     this.render();

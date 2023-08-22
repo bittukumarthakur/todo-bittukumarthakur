@@ -9,21 +9,8 @@ const request = (url, method, body, promise) => {
 };
 
 class TodoService {
-  #taskLists;
-  #todoStorage;
 
-  constructor(tasklists, todoStorage) {
-    this.#taskLists = tasklists;
-    this.#todoStorage = todoStorage;
-  }
-
-  load() {
-    const taskListsDetail = this.#todoStorage.getDetails();
-    this.#taskLists.load(taskListsDetail);
-  }
-
-  saveTaskListsDetails() {
-    this.#todoStorage.save(this.#taskLists.report());
+  constructor() {
   }
 
   addTaskList(title, render) {
@@ -55,10 +42,4 @@ class TodoService {
       .then((res) => res.json())
       .then(render);
   }
-
-  getAll() {
-    this.getTaskListsDetail();
-    return this.#taskLists.report();
-  }
-
 }
