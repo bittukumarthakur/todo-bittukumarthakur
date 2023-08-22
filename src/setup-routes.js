@@ -1,5 +1,6 @@
 const fs = require("node:fs");
 const { TaskList } = require("./task-list");
+const { Task } = require("./task");
 
 const MIME_TYPE = {
   html: "text/html",
@@ -67,9 +68,11 @@ const createTaskList = (request, response) => {
 };
 
 const addTask = (request, response) => {
-  const { taskLists } = request.context;
+  const { taskLists, todoStorage } = request.context;
   const { taskListId, taskDescription } = JSON.parse(request.body);
-  // taskLists.addTask(taskListId, taskDescription);
+  const task = new Task(taskDescription);
+  taskLists.addTask(taskListId, task);
+  todoStorage.save(taskLists.report());
 
   response.writeHead(204);
   response.end();
