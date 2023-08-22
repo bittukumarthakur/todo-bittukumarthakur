@@ -84,13 +84,16 @@ const removeTask = (request, response) => {
   taskLists.removeTask(taskListId, taskId);
   todoStorage.save(taskLists.report());
 
-
   response.writeHead(204);
   response.end();
 };
 
 const toggleTaskStatus = (request, response) => {
-  const { todoData } = request.context;
+  const { taskLists, todoStorage } = request.context;
+  const { taskListId, taskId } = JSON.parse(request.body);
+  taskLists.toggleMark(taskListId, taskId);
+  todoStorage.save(taskLists.report());
+
   response.writeHead(204);
   response.end();
 };
@@ -106,8 +109,8 @@ const setupRoutes = (router) => {
   router.route("/", "GET", serveHomePage);
   router.route("/task-lists", "GET", serveTaskListsDetail);
   router.route("/task-lists", "POST", createTaskList); //done
-  router.route("/task-lists/tasks", "POST", addTask);
-  router.route("/task-lists/tasks", "DELETE", removeTask);
+  router.route("/task-lists/tasks", "POST", addTask); // done
+  router.route("/task-lists/tasks", "DELETE", removeTask);  // done
   router.route("/task-lists/tasks", "PATCH", toggleTaskStatus);
 
 };

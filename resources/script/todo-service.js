@@ -55,13 +55,15 @@ class TodoService {
   changeSortMethod(taskListId, methodName, render) {
     this.#taskLists.sortBy(taskListId, methodName);
     this.saveTaskListsDetails();
+    render();
     request("/task-lists", "PATCH", { taskListId, methodName }, render);
   }
 
   removeTaskList(taskListId, render) {
     this.#taskLists.removeTaskList(taskListId);
     this.saveTaskListsDetails();
-    request("/task-lists", "DELETE", { taskListId }, render);
+    render();
+    // request("/task-lists", "DELETE", { taskListId }, render);
   }
 
   getAll() {
