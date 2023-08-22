@@ -14,16 +14,27 @@ class TaskListsFormatter {
     this.#taskLists = taskLists;
   }
 
+  #groupTasks(tasks) {
+    const markedTasks = tasks.filter(task => task.isMarked);
+    const notMarkedTasks = tasks.filter(task => !task.isMarked);
+
+    return [...notMarkedTasks, ...markedTasks];
+  }
+
+  #sortAlphabetically(tasks) {
+    const method = (taskA, taskB) => taskA.description > taskB.description ? 0 : -1;
+
+    return tasks.toSorted(method);
+  }
+
   #sortBy(methodName, taskList) {
     const sortMethods = {
-      group: (taskA) => taskA.isMarked === true ? 0 : -1,
-      alphabetically: (taskA, taskB) =>
-        taskA.description > taskB.description ? 0 : -1,
-      default: () => 0
+      group: this.#groupTasks,
+      alphabetically: this.#sortAlphabetically,
+      default: (taskList) => taskList
     };
 
-    const method = sortMethods[methodName];
-    return taskList.toSorted(method);
+    return sortMethods[methodName](taskList);
   }
 
   getTaskLists() {
