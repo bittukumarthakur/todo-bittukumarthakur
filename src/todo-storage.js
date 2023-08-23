@@ -8,9 +8,7 @@ class TodoStorage {
   }
 
   save(todoDetails) {
-    this.#fs.writeFileSync(this.#filePath, JSON.stringify(todoDetails, null, 2), (error) => {
-      if (error) console.log("Error in saving comment:", error);
-    });
+    this.#fs.writeFileSync(this.#filePath, JSON.stringify(todoDetails, null, 2));
   }
 
   get() {

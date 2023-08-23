@@ -38,22 +38,6 @@ body {
   cursor: pointer;
 }
 
-ol {
-  padding-left: 1em;
-}
-
-li {
-  font-size: 32px;
-  line-height: 1.7em;
-  cursor: pointer;
-}
-
-li:hover .remove-button {
-  display: inline;
-  /* background: url("icons8-delete-document-64.png"); */
-  background-size: contain;
-}
-
 .remove-button {
   height: 1.2em;
   aspect-ratio: 1/1;
@@ -61,13 +45,23 @@ li:hover .remove-button {
   background: transparent;
   color: rgb(253, 37, 88);
   border: none;
-  /* display: none; */
+  /* visibility: hidden; */
   cursor: pointer;
 }
 
 .task {
+  width: 93%;
   display: flex;
-  flex-wrap: wrap;
+  cursor: pointer;
+  border-bottom: 1px solid grey;
+}
+
+.task>p {
+  width: 90%;
+}
+
+.task:hover .remove-button {
+  visibility: visible;
 }
 
 .input-wrapper {

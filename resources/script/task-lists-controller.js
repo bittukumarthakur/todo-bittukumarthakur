@@ -7,7 +7,7 @@ class TaskListsController {
     this.#todoService = todoService;
   }
 
-  render() {
+  #render() {
     this.#todoService.getTaskListsDetail((taskListsDetail) => {
       this.#taskListsView.render(taskListsDetail);
     });
@@ -15,34 +15,33 @@ class TaskListsController {
 
   #attachListeners() {
     this.#taskListsView.onclickAddTaskList((title) => {
-      this.#todoService.addTaskList(title, () => this.render());
+      this.#todoService.addTaskList(title, () => this.#render());
     });
 
     this.#taskListsView.onclickAddTask((taskListId, taskDescription) => {
-      this.#todoService.addTask(taskListId, taskDescription, () => this.render());
+      this.#todoService.addTask(taskListId, taskDescription, () => this.#render());
     });
 
     this.#taskListsView.onclickToggleMark((taskListId, taskId) => {
-      this.#todoService.toggleStatusMark(taskListId, taskId, () => this.render());
-      this.render();
+      this.#todoService.toggleStatusMark(taskListId, taskId, () => this.#render());
     });
 
     this.#taskListsView.onclickRemoveTask((taskListId, taskId) => {
-      this.#todoService.removeTask(taskListId, taskId, () => this.render());
+      this.#todoService.removeTask(taskListId, taskId, () => this.#render());
     });
 
     this.#taskListsView.onChangeSortMethod((taskListId, methodName) => {
-      this.#todoService.changeSortMethod(taskListId, methodName, () => this.render());
+      this.#todoService.changeSortMethod(taskListId, methodName, () => this.#render());
     });
 
     this.#taskListsView.onclickRemoveTaskList((taskListId) => {
-      this.#todoService.removeTaskList(taskListId, () => this.render());
+      this.#todoService.removeTaskList(taskListId, () => this.#render());
     });
   }
 
   start() {
     this.#taskListsView.initialTemplate();
     this.#attachListeners();
-    this.render();
+    this.#render();
   }
 };
