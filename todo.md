@@ -211,9 +211,9 @@ taskListDetails: [
   }
 ]
 
-## 
 
-data organizer;
-data formatter;
+## static properties;
+
+taskList
 
 
