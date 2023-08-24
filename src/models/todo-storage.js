@@ -4,7 +4,7 @@ class TodoStorage {
 
   constructor(fs) {
     this.#fs = fs;
-    this.#filePath = "./resources/task-lists-detail.json";
+    this.#filePath = "./database/task-lists-detail.json";
   }
 
   save(todoDetails) {

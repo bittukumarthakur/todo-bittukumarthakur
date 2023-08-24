@@ -1,8 +1,8 @@
 const fs = require("node:fs");
 const { createTodoApp } = require("./src/todo-app");
-const { TaskLists } = require("./src/task-lists.js");
-const { TodoStorage } = require("./src/todo-storage.js");
-const { TaskListController } = require("./src/task-lists-controller.js");
+const { TaskLists } = require("./src/models/task-lists");
+const { TodoStorage } = require("./src/models/todo-storage.js");
+const { TaskListController } = require("./src/controller/task-lists-controller");
 
 const PORT = 8000;
 

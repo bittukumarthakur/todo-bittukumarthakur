@@ -51,18 +51,12 @@ const serveTaskListsDetail = (request, response) => {
   response.send(taskListsDetail);
 };
 
-const logger = (request, response, next) => {
-  const { path, method } = request;
-  console.log({ path, method });
-  next()
-};
 
 module.exports = {
-  logger,
   addTask,
   removeTask,
   addTaskList,
   removeTaskList,
   toggleTaskStatus,
   serveTaskListsDetail,
-}
+};

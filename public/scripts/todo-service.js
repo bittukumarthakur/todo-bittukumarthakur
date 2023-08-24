@@ -31,13 +31,13 @@ class TodoService {
     request("/task-lists/tasks", "DELETE", { taskListId, taskId }, render);
   }
 
+  removeTaskList(taskListId, render) {
+    request("/task-lists", "DELETE", { taskListId }, render);
+  }
+
   changeSortMethod(taskListId, methodName, render) {
     this.#taskListsFormatter.addSortMethod(taskListId, methodName);
     render();
-  }
-
-  removeTaskList(taskListId, render) {
-    request("/task-lists", "DELETE", { taskListId }, render);
   }
 
   getTaskListsDetail(render) {

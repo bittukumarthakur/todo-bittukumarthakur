@@ -1,5 +1,5 @@
-const { Task } = require("./task");
-const { TaskList } = require("./task-list");
+const { Task } = require("../models/task");
+const { TaskList } = require("../models/task-list");
 
 class TaskListController {
   #taskLists;
