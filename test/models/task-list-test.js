@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 const { it, describe } = require("node:test");
 const { strictEqual, deepStrictEqual } = require("assert");
 const { TaskList } = require("../../src/models/task-list");
