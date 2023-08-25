@@ -3,14 +3,12 @@ const { Task } = require("./task");
 class TaskList {
   #tasksWithId;
   #taskCount;
-  #sortMethodName;
   #title;
 
-  constructor(title) {
+  constructor(title, taskCount = 0, tasksWithId = []) {
     this.#title = title;
-    this.#tasksWithId = [];
-    this.#taskCount = 0;
-    this.#sortMethodName = "default";
+    this.#tasksWithId = tasksWithId;
+    this.#taskCount = taskCount;
   }
 
   getTitle() {
