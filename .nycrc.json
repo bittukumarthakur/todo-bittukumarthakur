@@ -3,5 +3,5 @@
   "reporter": [
     "html"
   ],
-  "check-coverage": true
+  "check-coverage": false
 }

@@ -1,2 +1,4 @@
 node_modules
 task-lists-detail.json
+.nyc_output
+coverage

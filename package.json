@@ -4,14 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --watch --test test/*",
     "start": "node --watch server.js",
-    "lint": "npx eslint ."
+    "lint": "npx eslint .",
+    "coverage": "npx nyc node --test"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^8.45.0",
+    "nyc": "^15.1.0",
     "supertest": "^6.3.3"
   },
   "dependencies": {
