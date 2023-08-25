@@ -1,0 +1,7 @@
+{
+  "all": true,
+  "reporter": [
+    "html"
+  ],
+  "check-coverage": true
+}
